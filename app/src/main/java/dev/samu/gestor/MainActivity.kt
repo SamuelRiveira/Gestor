@@ -46,7 +46,11 @@ class MainActivity : ComponentActivity() {
                 inputStream.bufferedReader().forEachLine { lineList.add(it) }
 
                 withContext(Dispatchers.Main) {
-                    lineList.forEach { Log.i("Datos", it) }
+                    lineList.forEach {
+                        var usuario = it.split(":")[0]
+                        var password = it.split(":")[1]
+                        Log.i("Datos", "Usuario: $usuario Contraseña: $password")
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("AppDebug", "Error reading file")
