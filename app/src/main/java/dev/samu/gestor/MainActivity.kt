@@ -119,14 +119,6 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
-                    Text(text = "No hay contraseñas guardadas", fontSize = 20.sp)
-                }
             }
 
             FloatingActionButton(
