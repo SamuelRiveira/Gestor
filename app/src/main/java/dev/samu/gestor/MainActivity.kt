@@ -51,42 +51,23 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun SaveTextToFile(
-        modifier: Modifier,
-        userPass: String = "Samu:contra1234",
+        modifier: Modifier = Modifier,
+        userPass: String = "Ainhoa:chumino123",
         nombreArchivo: String = "userPass"
     ) {
         val context = LocalContext.current
-        var outs = WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
-        var contador: Int = 1
-//        Column {
-//            Button(
-//                onClick = {
-//                    var outs = WriteReadUserPass.guardarUserPassArchivo(context, userPass, nombreArchivo)
-//                    Log.i("prueba", outs.toString())
-//                },
-//
-//            ) {
-//                Text(
-//                    text = "Guardar Archivo"
-//                )
-//            }
-//
-//            Button(
-//                modifier = Modifier,
-//                onClick = {
-//                    var outs = WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
-//                    Log.i("prueba", outs.toString())
-//                }
-//            ) {
-//                Text(
-//                    text = "Leer"
-//                )
-//            }
-//        }
+        var outs by remember {
+            mutableStateOf(
+                try {
+                    WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
+                } catch (e: Exception) {
+                    Log.e("Error", "No se pudo leer el archivo: ${e.message}")
+                    emptyList()
+                }
+            )
+        }
 
-        Column(
-            modifier = Modifier,
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
@@ -95,13 +76,11 @@ class MainActivity : ComponentActivity() {
                     .heightIn(50.dp)
                     .background(Color(0xFF87CEFA))
             ) {
-                Text(
-                    text = "Gestor de Contraseñas",
-                )
+                Text(text = "Gestor de Contraseñas")
             }
 
             if (outs.isNotEmpty()) {
-                for (elemento in outs) {
+                outs.forEachIndexed { index, elemento ->
                     if (elemento.contains(":")) {
                         val partes = elemento.split(":")
                         if (partes.size == 2) {
@@ -114,7 +93,7 @@ class MainActivity : ComponentActivity() {
                                     .background(Color.LightGray)
                                     .padding(5.dp)
                             ) {
-                                Row(verticalAlignment = CenterVertically) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
                                     Image(
                                         painter = painterResource(R.drawable.perfil),
                                         contentDescription = "",
@@ -122,10 +101,8 @@ class MainActivity : ComponentActivity() {
                                             .size(80.dp)
                                             .padding(10.dp)
                                     )
-                                    Column(
-                                        modifier = Modifier
-                                    ) {
-                                        Text(text = "cuenta $contador", fontSize = 25.sp)
+                                    Column(modifier = Modifier) {
+                                        Text(text = "cuenta ${index}", fontSize = 25.sp)
                                         Text(text = usuario, fontSize = 15.sp)
                                         Text(text = password, fontSize = 15.sp)
                                     }
@@ -135,13 +112,19 @@ class MainActivity : ComponentActivity() {
                                     ) {
                                         Image(
                                             painter = painterResource(R.drawable.papelera),
-                                            contentDescription = "",
-                                            modifier = Modifier.size(33.dp)
+                                            contentDescription = "Eliminar",
+                                            modifier = Modifier
+                                                .size(33.dp)
+                                                .clickable {
+                                                    outs = outs.toMutableList().apply {
+                                                        removeAt(index)
+                                                    }.filter { it.isNotBlank() }
+                                                    WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
+                                                }
                                         )
                                     }
                                 }
                             }
-                            contador++
                         }
                     }
                 }
@@ -157,8 +140,11 @@ class MainActivity : ComponentActivity() {
 
             FloatingActionButton(
                 onClick = {
-                    
-                },
+                    outs = outs.toMutableList().apply {
+                        add(userPass)
+                    }.filter { it.isNotBlank() }
+                    WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
+                }
             ) {
                 Icon(Icons.Filled.Add, "Floating action button.")
             }
