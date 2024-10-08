@@ -72,48 +72,46 @@ class MainActivity : ComponentActivity() {
 
             if (outs.isNotEmpty()) {
                 outs.forEachIndexed { index, elemento ->
-                    if (elemento.contains(":")) {
-                        val partes = elemento.split(":")
-                        if (partes.size == 2) {
-                            val usuario = partes[0]
-                            val password = partes[1]
+                    val partes = elemento.split(":")
+                    if (partes.size == 2) {
+                        val usuario = partes[0]
+                        val password = partes[1]
 
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.LightGray)
-                                    .padding(5.dp)
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.LightGray)
+                                .padding(5.dp)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Image(
+                                    painter = painterResource(R.drawable.perfil),
+                                    contentDescription = "Perfil",
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .padding(10.dp)
+                                )
+                                Column(modifier = Modifier) {
+                                    Text(text = "cuenta ${index}", fontSize = 25.sp)
+                                    Text(text = usuario, fontSize = 15.sp)
+                                    Text(text = password, fontSize = 15.sp)
+                                }
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.End
+                                ) {
                                     Image(
-                                        painter = painterResource(R.drawable.perfil),
-                                        contentDescription = "",
+                                        painter = painterResource(R.drawable.papelera),
+                                        contentDescription = "Eliminar",
                                         modifier = Modifier
-                                            .size(80.dp)
-                                            .padding(10.dp)
+                                            .size(33.dp)
+                                            .clickable {
+                                                outs = outs.toMutableList().apply {
+                                                    removeAt(index)
+                                                }.filter { it.isNotBlank() }
+                                                WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
+                                            }
                                     )
-                                    Column(modifier = Modifier) {
-                                        Text(text = "cuenta ${index}", fontSize = 25.sp)
-                                        Text(text = usuario, fontSize = 15.sp)
-                                        Text(text = password, fontSize = 15.sp)
-                                    }
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.End
-                                    ) {
-                                        Image(
-                                            painter = painterResource(R.drawable.papelera),
-                                            contentDescription = "Eliminar",
-                                            modifier = Modifier
-                                                .size(33.dp)
-                                                .clickable {
-                                                    outs = outs.toMutableList().apply {
-                                                        removeAt(index)
-                                                    }.filter { it.isNotBlank() }
-                                                    WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
-                                                }
-                                        )
-                                    }
                                 }
                             }
                         }
