@@ -55,13 +55,14 @@ class MainActivity : ComponentActivity() {
         userPass: String = "Samu:contra1234",
         nombreArchivo: String = "userPass"
     ) {
-//        val context = LocalContext.current
+        val context = LocalContext.current
 //        Column {
 //            Button(
 //                onClick = {
 //                    var outs = WriteReadUserPass.guardarUserPassArchivo(context, userPass, nombreArchivo)
 //                    Log.i("prueba", outs.toString())
-//                }
+//                },
+//
 //            ) {
 //                Text(
 //                    text = "Guardar Archivo"
@@ -128,6 +129,13 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
+            }
+            FloatingActionButton(
+                onClick = {
+
+                },
+            ) {
+                Icon(Icons.Filled.Add, "Floating action button.")
             }
         }
     }
