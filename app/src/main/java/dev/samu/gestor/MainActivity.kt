@@ -56,6 +56,8 @@ class MainActivity : ComponentActivity() {
         nombreArchivo: String = "userPass"
     ) {
         val context = LocalContext.current
+        var outs = WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
+        var contador: Int = 1
 //        Column {
 //            Button(
 //                onClick = {
@@ -70,6 +72,7 @@ class MainActivity : ComponentActivity() {
 //            }
 //
 //            Button(
+//                modifier = Modifier,
 //                onClick = {
 //                    var outs = WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
 //                    Log.i("prueba", outs.toString())
@@ -80,6 +83,7 @@ class MainActivity : ComponentActivity() {
 //                )
 //            }
 //        }
+
         Column(
             modifier = Modifier,
         ) {
@@ -95,44 +99,65 @@ class MainActivity : ComponentActivity() {
                     text = "Gestor de Contraseñas",
                 )
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray )
-                    .padding(5.dp)
-            ) {
-                Row(verticalAlignment = CenterVertically){
-                    Image(
-                        painter = painterResource(R.drawable.perfil),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(80.dp)
-                            .padding(10.dp)
-                    )
-                    Column(
-                        modifier = Modifier
-                    ) {
-                        Text(text = "Amazon", fontSize = 25.sp)
-                        Text(text = "Usuario", fontSize = 15.sp)
-                        Text(text = "Contraseña", fontSize = 15.sp)
-                    }
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.papelera),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(33.dp)
-                        )
+
+            if (outs.isNotEmpty()) {
+                for (elemento in outs) {
+                    if (elemento.contains(":")) {
+                        val partes = elemento.split(":")
+                        if (partes.size == 2) {
+                            val usuario = partes[0]
+                            val password = partes[1]
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(Color.LightGray)
+                                    .padding(5.dp)
+                            ) {
+                                Row(verticalAlignment = CenterVertically) {
+                                    Image(
+                                        painter = painterResource(R.drawable.perfil),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .size(80.dp)
+                                            .padding(10.dp)
+                                    )
+                                    Column(
+                                        modifier = Modifier
+                                    ) {
+                                        Text(text = "cuenta $contador", fontSize = 25.sp)
+                                        Text(text = usuario, fontSize = 15.sp)
+                                        Text(text = password, fontSize = 15.sp)
+                                    }
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.End
+                                    ) {
+                                        Image(
+                                            painter = painterResource(R.drawable.papelera),
+                                            contentDescription = "",
+                                            modifier = Modifier.size(33.dp)
+                                        )
+                                    }
+                                }
+                            }
+                            contador++
+                        }
                     }
                 }
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                ) {
+                    Text(text = "No hay contraseñas guardadas", fontSize = 20.sp)
+                }
             }
+
             FloatingActionButton(
                 onClick = {
-
+                    
                 },
             ) {
                 Icon(Icons.Filled.Add, "Floating action button.")
