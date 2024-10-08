@@ -56,16 +56,7 @@ class MainActivity : ComponentActivity() {
         nombreArchivo: String = "userPass"
     ) {
         val context = LocalContext.current
-        var outs by remember {
-            mutableStateOf(
-                try {
-                    WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
-                } catch (e: Exception) {
-                    Log.e("Error", "No se pudo leer el archivo: ${e.message}")
-                    emptyList()
-                }
-            )
-        }
+        var outs by remember { mutableStateOf(WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo))}
 
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
