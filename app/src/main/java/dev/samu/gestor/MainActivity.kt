@@ -148,7 +148,7 @@ class MainActivity : ComponentActivity() {
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
             ) {
-                Icon(Icons.Filled.Add, contentDescription = "Floating action button.")
+                Icon(Icons.Filled.Add, contentDescription = "Crear")
             }
 
             if (showDialog) {
