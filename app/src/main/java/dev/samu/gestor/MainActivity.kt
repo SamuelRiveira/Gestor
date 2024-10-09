@@ -56,82 +56,103 @@ class MainActivity : ComponentActivity() {
         nombreArchivo: String = "userPass"
     ) {
         val context = LocalContext.current
-        var outs by remember { mutableStateOf(WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo))}
+        var outs by remember { mutableStateOf(WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)) }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+            // Contenido principal dentro de un Column
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(50.dp)
-                    .background(Color(0xFF87CEFA))
+                    .fillMaxSize()
+                    .background(Color.White)
             ) {
-                Text(text = "Gestor de Contraseñas")
-            }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(70.dp)
+                        .background(Color(0xFFDAE2FF))
+                ) {
+                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp)
+                }
 
-            if (outs.isNotEmpty()) {
-                outs.forEachIndexed { index, elemento ->
-                    val partes = elemento.split(":")
-                    if (partes.size == 2) {
-                        val usuario = partes[0]
-                        val password = partes[1]
+                if (outs.isNotEmpty()) {
+                    outs.forEachIndexed { index, elemento ->
+                        val partes = elemento.split(":")
+                        if (partes.size == 2) {
+                            val usuario = partes[0]
+                            val password = partes[1]
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.LightGray)
-                                .padding(5.dp)
-                        ) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Image(
-                                    painter = painterResource(R.drawable.perfil),
-                                    contentDescription = "Perfil",
-                                    modifier = Modifier
-                                        .size(80.dp)
-                                        .padding(10.dp)
-                                )
-                                Column(modifier = Modifier) {
-                                    Text(text = "cuenta ${index}", fontSize = 25.sp)
-                                    Text(text = usuario, fontSize = 15.sp)
-                                    Text(text = password, fontSize = 15.sp)
-                                }
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.End
-                                ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
                                     Image(
-                                        painter = painterResource(R.drawable.papelera),
-                                        contentDescription = "Eliminar",
+                                        painter = painterResource(R.drawable.perfil),
+                                        contentDescription = "Perfil",
                                         modifier = Modifier
-                                            .size(33.dp)
-                                            .clickable {
-                                                outs = outs.toMutableList().apply {
-                                                    removeAt(index)
-                                                }.filter { it.isNotBlank() }
-                                                WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
-                                            }
+                                            .size(80.dp)
+                                            .padding(10.dp)
                                     )
+                                    Column(modifier = Modifier) {
+                                        Text(text = "cuenta ${index + 1}", fontSize = 25.sp)
+                                        Text(text = usuario, fontSize = 15.sp)
+                                        Text(text = password, fontSize = 15.sp)
+                                    }
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.End
+                                    ) {
+                                        Image(
+                                            painter = painterResource(R.drawable.editar),
+                                            contentDescription = "Editar",
+                                            modifier = Modifier
+                                                .size(33.dp)
+                                        )
+                                        Image(
+                                            painter = painterResource(R.drawable.papelera),
+                                            contentDescription = "Eliminar",
+                                            modifier = Modifier
+                                                .size(33.dp)
+                                                .clickable {
+                                                    outs = outs.toMutableList().apply {
+                                                        removeAt(index)
+                                                    }.filter { it.isNotBlank() }
+                                                    WriteReadUserPass.guardarUserPassArchivo(
+                                                        context,
+                                                        outs.joinToString("\n"),
+                                                        nombreArchivo
+                                                    )
+                                                }
+                                        )
+                                    }
                                 }
                             }
+                            HorizontalDivider(thickness = 1.dp)
                         }
                     }
                 }
             }
-
             FloatingActionButton(
                 onClick = {
                     outs = outs.toMutableList().apply {
                         add(userPass)
                     }.filter { it.isNotBlank() }
-                    WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
-                }
+                    WriteReadUserPass.guardarUserPassArchivo(
+                        context,
+                        outs.joinToString("\n"),
+                        nombreArchivo
+                    )
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
             ) {
-                Icon(Icons.Filled.Add, "Floating action button.")
+                Icon(Icons.Filled.Add, contentDescription = "Floating action button.")
             }
         }
     }
