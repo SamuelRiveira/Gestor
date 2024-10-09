@@ -104,20 +104,25 @@ class MainActivity : ComponentActivity() {
                                         Text(text = password, fontSize = 15.sp)
                                     }
                                     Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.End
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .heightIn(70.dp),
+                                        horizontalArrangement = Arrangement.End,
+                                        verticalAlignment = Alignment.CenterVertically
                                     ) {
                                         Image(
                                             painter = painterResource(R.drawable.editar),
                                             contentDescription = "Editar",
                                             modifier = Modifier
-                                                .size(33.dp)
+                                                .size(40.dp)
+                                                .padding(end = 10.dp)
                                         )
                                         Image(
                                             painter = painterResource(R.drawable.papelera),
                                             contentDescription = "Eliminar",
                                             modifier = Modifier
-                                                .size(33.dp)
+                                                .size(40.dp)
+                                                .padding(end = 10.dp)
                                                 .clickable {
                                                     outs = outs.toMutableList().apply {
                                                         removeAt(index)
