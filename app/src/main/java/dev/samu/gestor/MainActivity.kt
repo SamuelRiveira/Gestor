@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth().heightIn(70.dp).background(Color(0xFFDAE2FF))
                 ) {
-                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp)
+                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp, color = Color.Black)
                 }
 
                 LazyColumn {
@@ -95,9 +95,9 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.size(80.dp).padding(10.dp)
                                 )
                                 Column(modifier = Modifier) {
-                                    Text(text = "cuenta $index", fontSize = 25.sp)
-                                    Text(text = usuario, fontSize = 15.sp)
-                                    Text(text = contrasena, fontSize = 15.sp)
+                                    Text(text = "cuenta $index", fontSize = 25.sp, color = Color.Black)
+                                    Text(text = usuario, fontSize = 15.sp, color = Color.Black)
+                                    Text(text = contrasena, fontSize = 15.sp, color = Color.Black)
                                 }
                                 Row(
                                     modifier = Modifier.fillMaxWidth().heightIn(70.dp),
@@ -142,7 +142,11 @@ class MainActivity : ComponentActivity() {
                     isEditing = false
                     showDialog = true
                 },
-                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)
+                containerColor = Color(0xFFDAE2FF),
+                contentColor = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Floating action button.")
             }
@@ -158,7 +162,10 @@ class MainActivity : ComponentActivity() {
                                 onValueChange = { username = it },
                                 placeholder = { Text(text = "Usuario") }
                             )
-                            Spacer(modifier = Modifier.height(8.dp))
+                            Spacer(
+                                modifier = Modifier
+                                    .height(8.dp)
+                            )
                             TextField(
                                 value = password,
                                 onValueChange = { password = it },
