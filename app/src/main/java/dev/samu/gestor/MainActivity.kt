@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
         var outs by remember { mutableStateOf(WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo).toMutableList()) }
         var showDialog by remember { mutableStateOf(false) }
         var isEditing by remember { mutableStateOf(false) }
-        var currentIndex by remember { mutableStateOf(-1) } // -1 indica que no estamos editando
+        var currentIndex by remember { mutableStateOf(-1) }
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
 
@@ -78,10 +78,13 @@ class MainActivity : ComponentActivity() {
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth().heightIn(70.dp).background(Color(0xFF2A9AFB))
                 ) {
-                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp, color = Color.Black)
+                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp, color = Color.White)
                 }
 
-                LazyColumn {
+                LazyColumn(
+                    modifier =  Modifier
+                        .padding(bottom = 70.dp)
+                ) {
                     items(outs.size) { index ->
                         val partes = outs[index].split(":")
                         if (partes.size == 2) {
@@ -95,7 +98,7 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.size(80.dp).padding(10.dp)
                                 )
                                 Column(modifier = Modifier) {
-                                    Text(text = "cuenta $index", fontSize = 25.sp, color = Color.Black)
+                                    Text(text = "Cuenta $index", fontSize = 25.sp, color = Color.Black)
                                     Text(text = usuario, fontSize = 15.sp, color = Color.Black)
                                     Text(text = contrasena, fontSize = 15.sp, color = Color.Black)
                                 }
@@ -143,7 +146,7 @@ class MainActivity : ComponentActivity() {
                     showDialog = true
                 },
                 containerColor = Color(0xFF2A9AFB),
-                contentColor = Color.Black,
+                contentColor = Color.White,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
