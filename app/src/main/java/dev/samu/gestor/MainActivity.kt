@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.fillMaxWidth().heightIn(70.dp).background(Color(0xFFDAE2FF))
+                    modifier = Modifier.fillMaxWidth().heightIn(70.dp).background(Color(0xFF2A9AFB))
                 ) {
                     Text(text = "Gestor de Contraseñas", fontSize = 27.sp, color = Color.Black)
                 }
@@ -142,7 +142,7 @@ class MainActivity : ComponentActivity() {
                     isEditing = false
                     showDialog = true
                 },
-                containerColor = Color(0xFFDAE2FF),
+                containerColor = Color(0xFF2A9AFB),
                 contentColor = Color.Black,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
