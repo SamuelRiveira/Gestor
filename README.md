@@ -12,9 +12,9 @@
 
 ## 📱 Resultado de la Interfaz
 
-![unnamed](https://github.com/user-attachments/assets/d48d0322-799f-4f31-b59b-811f78de4d30)
+![vista_final_gestor_contraseñas](https://github.com/user-attachments/assets/f6903d3c-a5b5-489f-9aec-c5a7f7c4101a)
 
-> _Este es un boceto de cómo se ve la aplicación_
+> _Este es el resultado de cómo se ve la aplicación_
 
 ## 📱 Boceto de la Interfaz
 
