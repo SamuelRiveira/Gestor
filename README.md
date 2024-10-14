@@ -12,11 +12,9 @@
 
 ## 📱 Boceto de la Interfaz
 
-Aquí puedes colocar un boceto o captura de pantalla de tu app:
+![unnamed](https://github.com/user-attachments/assets/d48d0322-799f-4f31-b59b-811f78de4d30)
 
-![Password Manager Mockup](path-to-your-image)
-
-> _Este es un boceto preliminar de cómo se verá la aplicación_
+> _Este es un boceto preliminar de cómo se iba a ver la aplicación_
 
 ## 🛠️ Tecnologías Utilizadas
 
