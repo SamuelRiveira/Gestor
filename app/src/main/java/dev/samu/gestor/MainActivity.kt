@@ -1,6 +1,7 @@
 package dev.samu.gestor
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -64,7 +65,14 @@ class MainActivity : ComponentActivity() {
         nombreArchivo: String = "userPass"
     ) {
         val context = LocalContext.current
-        var outs by remember { mutableStateOf(WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo).toMutableList()) }
+        var outs by remember {
+            mutableStateOf(
+                WriteReadUserPass.leerUserPassArchivo(context, nombreArchivo)
+                    .filter { it.isNotEmpty() && it.contains(":") }
+                    .distinct()
+                    .toMutableList()
+            )
+        }
         var showDialog by remember { mutableStateOf(false) }
         var isEditing by remember { mutableStateOf(false) }
         var currentIndex by remember { mutableStateOf(-1) }
@@ -127,14 +135,17 @@ class MainActivity : ComponentActivity() {
                                             .size(40.dp)
                                             .padding(end = 10.dp)
                                             .clickable {
+                                                Log.i("prueba", outs.toString())
                                                 outs = outs.toMutableList().apply { removeAt(index) }
-                                                outs.filter { it.isNotEmpty() }
+                                                outs = outs.filter { it.isNotEmpty() && it.contains(":") }.toMutableList()
                                                 WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
+                                                Log.i("prueba", outs.toString())
                                             }
                                     )
                                 }
                             }
                             HorizontalDivider(thickness = 1.dp)
+                            Log.i("prueba", outs.toString())
                         }
                     }
                 }
@@ -167,10 +178,7 @@ class MainActivity : ComponentActivity() {
                                 onValueChange = { username = it },
                                 placeholder = { Text(text = "Usuario") }
                             )
-                            Spacer(
-                                modifier = Modifier
-                                    .height(8.dp)
-                            )
+                            Spacer(modifier = Modifier.height(8.dp))
                             TextField(
                                 value = password,
                                 onValueChange = { password = it },
@@ -184,13 +192,19 @@ class MainActivity : ComponentActivity() {
                                 showDialog = false
                                 val contrasenaEncriptada = CryptoHelper.encrypt(password, secretKey)
 
-                                if (isEditing) {
-                                    outs[currentIndex] = "$username:$contrasenaEncriptada"
-                                } else {
-                                    outs.add("$username:$contrasenaEncriptada"
-                                    )
+                                if (username.isNotBlank() && password.isNotBlank()) {
+                                    if (isEditing) {
+                                        outs[currentIndex] = "$username:$contrasenaEncriptada"
+                                        Log.i("prueba", "Editando cuenta en índice $currentIndex: ${outs[currentIndex]}")
+                                    } else {
+                                        outs.add("$username:$contrasenaEncriptada")
+                                        Log.i("prueba", "Añadiendo nueva cuenta: $username")
+                                    }
+
+                                    // Filtrar y eliminar duplicados antes de guardar
+                                    outs = outs.distinct().filter { it.isNotEmpty() && it.contains(":") }.toMutableList()
+                                    WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
                                 }
-                                WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
                             }
                         ) {
                             Text("Aceptar")
