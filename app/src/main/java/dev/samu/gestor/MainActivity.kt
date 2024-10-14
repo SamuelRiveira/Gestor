@@ -1,4 +1,4 @@
-package dev.saries.gestordecontraseas
+package dev.samu.gestor
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -41,13 +41,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.saries.gestordecontraseas.ui.theme.GestorDeContraseñasTheme
+import dev.samu.gestor.ui.theme.GestorTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GestorDeContraseñasTheme {
+            GestorTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -70,6 +70,7 @@ class MainActivity : ComponentActivity() {
         var currentIndex by remember { mutableStateOf(-1) }
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
+        val secretKey = CryptoHelper.getOrCreateKey(context)
 
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
@@ -89,7 +90,7 @@ class MainActivity : ComponentActivity() {
                         val partes = outs[index].split(":")
                         if (partes.size == 2) {
                             val usuario = partes[0]
-                            val contrasena = partes[1]
+                            val contrasenaEncriptada = partes[1]
 
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Image(
@@ -98,9 +99,9 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.size(80.dp).padding(10.dp)
                                 )
                                 Column(modifier = Modifier) {
-                                    Text(text = "cuenta $index", fontSize = 25.sp, color = Color.Black)
+                                    Text(text = "Cuenta $index", fontSize = 25.sp, color = Color.Black)
                                     Text(text = usuario, fontSize = 15.sp, color = Color.Black)
-                                    Text(text = contrasena, fontSize = 15.sp, color = Color.Black)
+                                    Text(text = "********", fontSize = 15.sp, color = Color.Black)
                                 }
                                 Row(
                                     modifier = Modifier.fillMaxWidth().heightIn(70.dp),
@@ -112,7 +113,7 @@ class MainActivity : ComponentActivity() {
                                         contentDescription = "Editar",
                                         modifier = Modifier.size(40.dp).padding(end = 10.dp).clickable {
                                             username = usuario
-                                            password = contrasena
+                                            password = CryptoHelper.decrypt(contrasenaEncriptada, secretKey)
                                             currentIndex = index
                                             isEditing = true
                                             showDialog = true
@@ -127,6 +128,7 @@ class MainActivity : ComponentActivity() {
                                             .padding(end = 10.dp)
                                             .clickable {
                                                 outs = outs.toMutableList().apply { removeAt(index) }
+                                                outs.filter { it.isNotEmpty() }
                                                 WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
                                             }
                                     )
@@ -180,10 +182,13 @@ class MainActivity : ComponentActivity() {
                         Button(
                             onClick = {
                                 showDialog = false
+                                val contrasenaEncriptada = CryptoHelper.encrypt(password, secretKey)
+
                                 if (isEditing) {
-                                    outs[currentIndex] = "$username:$password"
+                                    outs[currentIndex] = "$username:$contrasenaEncriptada"
                                 } else {
-                                    outs.add("$username:$password")
+                                    outs.add("$username:$contrasenaEncriptada"
+                                    )
                                 }
                                 WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
                             }
