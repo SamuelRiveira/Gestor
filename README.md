@@ -10,6 +10,12 @@
 - **🗑️ Eliminar:** Elimina contraseñas que ya no necesitas.
 - **🔒 Encriptación AES:** Las contraseñas se almacenan de manera segura usando encriptación AES para proteger tus datos sensibles.
 
+## 📱 Resultado de la Interfaz
+
+![unnamed](https://github.com/user-attachments/assets/d48d0322-799f-4f31-b59b-811f78de4d30)
+
+> _Este es un boceto preliminar de cómo se iba a ver la aplicación_
+
 ## 📱 Boceto de la Interfaz
 
 ![unnamed](https://github.com/user-attachments/assets/d48d0322-799f-4f31-b59b-811f78de4d30)
