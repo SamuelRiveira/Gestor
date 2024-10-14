@@ -78,12 +78,12 @@ class MainActivity : ComponentActivity() {
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth().heightIn(70.dp).background(Color(0xFF2A9AFB))
                 ) {
-                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp, color = Color.White)
+                    Text(text = "Gestor de Contraseñas", fontSize = 27.sp, color = Color.Black)
                 }
 
                 LazyColumn(
-                    modifier =  Modifier
-                        .padding(bottom = 70.dp)
+                    modifier = Modifier
+                        .padding(bottom = 80.dp)
                 ) {
                     items(outs.size) { index ->
                         val partes = outs[index].split(":")
@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier.size(80.dp).padding(10.dp)
                                 )
                                 Column(modifier = Modifier) {
-                                    Text(text = "Cuenta $index", fontSize = 25.sp, color = Color.Black)
+                                    Text(text = "cuenta $index", fontSize = 25.sp, color = Color.Black)
                                     Text(text = usuario, fontSize = 15.sp, color = Color.Black)
                                     Text(text = contrasena, fontSize = 15.sp, color = Color.Black)
                                 }
@@ -123,12 +123,12 @@ class MainActivity : ComponentActivity() {
                                         painter = painterResource(R.drawable.papelera),
                                         contentDescription = "Eliminar",
                                         modifier = Modifier
-                                                .size(40.dp)
-                                                .padding(end = 10.dp)
-                                                .clickable {
-                                                    outs = outs.toMutableList().apply { removeAt(index) }
-                                                    WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
-                                                }
+                                            .size(40.dp)
+                                            .padding(end = 10.dp)
+                                            .clickable {
+                                                outs = outs.toMutableList().apply { removeAt(index) }
+                                                WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
+                                            }
                                     )
                                 }
                             }
@@ -146,7 +146,7 @@ class MainActivity : ComponentActivity() {
                     showDialog = true
                 },
                 containerColor = Color(0xFF2A9AFB),
-                contentColor = Color.White,
+                contentColor = Color.Black,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
