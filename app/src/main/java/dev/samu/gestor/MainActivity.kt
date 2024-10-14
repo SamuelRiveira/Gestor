@@ -200,8 +200,6 @@ class MainActivity : ComponentActivity() {
                                         outs.add("$username:$contrasenaEncriptada")
                                         Log.i("prueba", "Añadiendo nueva cuenta: $username")
                                     }
-
-                                    // Filtrar y eliminar duplicados antes de guardar
                                     outs = outs.distinct().filter { it.isNotEmpty() && it.contains(":") }.toMutableList()
                                     WriteReadUserPass.guardarUserPassArchivo(context, outs.joinToString("\n"), nombreArchivo)
                                 }
